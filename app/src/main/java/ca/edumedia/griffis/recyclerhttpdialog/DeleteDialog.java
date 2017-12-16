@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import ca.edumedia.griffis.recyclerhttpdialog.models.BuildingPOJO;
 
+import static android.provider.Contacts.SettingsColumns.KEY;
+
 
 /**
  * Created by griffis on 2017-12-12.
@@ -23,7 +25,7 @@ public class DeleteDialog extends DialogFragment {
         void onFinishDeleteDialog(int inputNum);
     }
 
-    public static final String KEY = "BuildingPOJO";
+    public static final String BUILDING_KEY = "building_key";
 
     public DeleteDialog(){
         //Empty constructor required
@@ -32,8 +34,10 @@ public class DeleteDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle bundle) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        final BuildingPOJO theData = bundle.getParcelable(KEY);
-        builder.setMessage( "Are you sure you want to delete this item?" )
+
+        final BuildingPOJO theData = bundle.getParcelable(BUILDING_KEY);
+
+        builder.setMessage( "Are you sure you want to do something to this item?" )
                 .setPositiveButton(android.R.string.ok , new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // show me your Intent to delete it.

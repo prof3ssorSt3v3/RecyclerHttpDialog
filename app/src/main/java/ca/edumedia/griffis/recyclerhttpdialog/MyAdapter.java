@@ -5,6 +5,7 @@ package ca.edumedia.griffis.recyclerhttpdialog;
  */
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +14,10 @@ import android.widget.TextView;
 import java.util.List;
 import ca.edumedia.griffis.recyclerhttpdialog.models.BuildingPOJO;
 
+import static ca.edumedia.griffis.recyclerhttpdialog.MainActivity.mFManager;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
+
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     public static final String BUILDING_KEY = "building_key";
 
@@ -22,13 +25,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private List<BuildingPOJO> mBuildings;
 
     //Constructor
-    public PostAdapter(Context context, List<BuildingPOJO> buildings) {
+    public MyAdapter(Context context, List<BuildingPOJO> buildings) {
         this.mContext = context;
         this.mBuildings = buildings;
     }
 
     @Override
-    public PostAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View itemView = inflater.inflate(R.layout.item_view, parent, false);
         ViewHolder viewHolder = new ViewHolder(itemView);
@@ -36,7 +39,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(PostAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(MyAdapter.ViewHolder holder, int position) {
         final BuildingPOJO aBuilding = mBuildings.get(position);
 
         holder.tvName.setText(aBuilding.getNameEN());
@@ -46,6 +49,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             public void onClick(View v) {
                 //put the aBuilding into an Intent as an Extra
                 //and pass it to another activity...
+                //OR... Let's call our Dialog to ask the user something
+                //Launch the DeleteDialog FROM the MainActivity
+                MainActivity.mDialog = new DeleteDialog();
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(BUILDING_KEY, aBuilding);
+
+                MainActivity.mDialog.setArguments(bundle);
+                //use the Fragment manager to launch the dialog
+                MainActivity.mDialog.show( mFManager, "delete");
             }
         });
     }

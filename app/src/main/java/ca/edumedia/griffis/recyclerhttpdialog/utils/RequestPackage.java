@@ -3,19 +3,24 @@ package ca.edumedia.griffis.recyclerhttpdialog.utils;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.content.ContentValues.TAG;
+
 
 public class RequestPackage implements Parcelable {
 
     private String endPoint;
-    private HttpMethod method = HttpMethod.GET;
+    private String method = HttpMethod.GET.toString();
     private Map<String, String> params = new HashMap<>();
 
+
+    //ENDPOINT
     public String getEndpoint() {
         return endPoint;
     }
@@ -24,14 +29,20 @@ public class RequestPackage implements Parcelable {
         this.endPoint = endPoint;
     }
 
-    public HttpMethod getMethod() {
-        return method;
+
+
+    //METHOD
+    public String getMethod() {
+        return method.toString();
     }
 
     public void setMethod(HttpMethod method) {
-        this.method = method;
+        this.method = method.toString();
     }
 
+
+
+    //PARAMS
     public Map<String, String> getParams() {
         return params;
     }
@@ -46,6 +57,7 @@ public class RequestPackage implements Parcelable {
 
     public String getEncodedParams() {
         StringBuilder sb = new StringBuilder();
+        Log.i(TAG, "getEncodedParams: " +params.size() );
         for (String key : params.keySet()) {
             String value = null;
             try {
@@ -83,8 +95,7 @@ public class RequestPackage implements Parcelable {
 
     protected RequestPackage(Parcel in) {
         this.endPoint = in.readString();
-        //this.method = in.readString();
-        this.method = getMethod();
+        this.method = in.readString();
         int paramsSize = in.readInt();
         this.params = new HashMap<String, String>(paramsSize);
         for (int i = 0; i < paramsSize; i++) {

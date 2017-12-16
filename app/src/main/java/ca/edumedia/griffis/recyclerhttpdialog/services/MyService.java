@@ -29,11 +29,12 @@ public class MyService extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         RequestPackage requestPackage = intent.getParcelableExtra(REQUEST_PACKAGE);
-
+        Log.i(TAG, "MyService.onHandleIntent: " + requestPackage.getParams().size());
         String response;
         try {
             //the 2nd and 3rd params are for authorization username, password
-            response = HttpHelper.downloadUrl(requestPackage, "grif0193", "password");
+            response = HttpHelper.downloadUrl(requestPackage, "griffis", "pa$$word");
+
         } catch (IOException e) {
             e.printStackTrace();
             Intent messageIntent = new Intent(MY_SERVICE_MESSAGE);
