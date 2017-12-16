@@ -33,7 +33,7 @@ public class MyService extends IntentService {
         String response;
         try {
             //the 2nd and 3rd params are for authorization username, password
-            response = HttpHelper.downloadUrl(requestPackage, null, null);
+            response = HttpHelper.downloadUrl(requestPackage, "grif0193", "password");
         } catch (IOException e) {
             e.printStackTrace();
             Intent messageIntent = new Intent(MY_SERVICE_MESSAGE);
@@ -55,13 +55,13 @@ public class MyService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.i(TAG, "onCreate");
+        Log.i(TAG, "MyService onCreate");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "onDestroy");
+        Log.i(TAG, "MyService onDestroy");
     }
 
 }
