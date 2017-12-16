@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentActivity;
 
@@ -69,8 +67,6 @@ public class MainActivity
         //get the adapter for the recyclerview ready
         displayBuildings();
 
-        //prepare the dialog
-        //mDialog = newInstance();
         //create a FragmentManager for the Delete Dialog to be used later from the PostAdapter
         mFManager = getSupportFragmentManager();
 
@@ -78,7 +74,6 @@ public class MainActivity
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBR, new IntentFilter(MyService.MY_SERVICE_MESSAGE));
         //try to retrieve the list of buildings
         fetchBuildings(NO_SELECTED_CATEGORY_ID);
-
     }
 
     @Override
