@@ -11,8 +11,6 @@ import android.widget.Toast;
 
 import ca.edumedia.griffis.recyclerhttpdialog.models.BuildingPOJO;
 
-import static android.provider.Contacts.SettingsColumns.KEY;
-
 
 /**
  * Created by griffis on 2017-12-12.
@@ -25,17 +23,27 @@ public class DeleteDialog extends DialogFragment {
         void onFinishDeleteDialog(int inputNum);
     }
 
-    public static final String BUILDING_KEY = "building_key";
+    private static final String BUILDING_KEY = "building_key";
+    private static final String TAG = "TAG";
 
     public DeleteDialog(){
         //Empty constructor required
     }
 
+    public static DeleteDialog newInstance(String key, BuildingPOJO aBuilding) {
+        DeleteDialog frag = new DeleteDialog();
+        Bundle args = new Bundle();
+        args.putParcelable(key, aBuilding);
+        frag.setArguments(args);
+        return frag;
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle bundle) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        final BuildingPOJO theData = bundle.getParcelable(BUILDING_KEY);
+        final BuildingPOJO aBuilding = getArguments().getParcelable(BUILDING_KEY);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setMessage( "Are you sure you want to do something to this item?" )
                 .setPositiveButton(android.R.string.ok , new DialogInterface.OnClickListener() {
@@ -44,14 +52,12 @@ public class DeleteDialog extends DialogFragment {
                         //Intent to launch new Activity
                         // receive DataItem/BuildingPOJO Bundle from clicked item in the RecyclerView
                         // positive button id is -1
-
-                        //call the method back in the MainActivity to remove the DataItem from the Array of DataItems
-                        DeleteDialogListener activity = (DeleteDialogListener) getActivity();
                         //passing the building ID back to the MainActivity
-                        activity.onFinishDeleteDialog( theData.getBuildingId() );
+                        //call the method back in the MainActivity to remove the DataItem from the Array of DataItems
 
-                        Log.i("TAG", "onClick: ");
-                        Toast.makeText(getActivity(), "Clicked OK " +id + " " + theData.getNameEN(), Toast.LENGTH_SHORT).show();
+                        DeleteDialogListener activity = (DeleteDialogListener) getActivity();
+                        activity.onFinishDeleteDialog( aBuilding.getBuildingId() );
+                        Toast.makeText(getActivity(), "Clicked OK " +id + " " + aBuilding.getNameEN(), Toast.LENGTH_SHORT).show();
 
                     }
                 })

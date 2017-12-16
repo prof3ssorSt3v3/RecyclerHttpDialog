@@ -7,19 +7,20 @@ package ca.edumedia.griffis.recyclerhttpdialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import java.util.List;
 import ca.edumedia.griffis.recyclerhttpdialog.models.BuildingPOJO;
-
 import static ca.edumedia.griffis.recyclerhttpdialog.MainActivity.mFManager;
 
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
-    public static final String BUILDING_KEY = "building_key";
+    private static final String BUILDING_KEY = "building_key";
+    private static final String TAG = "TAG";
 
     private Context mContext;
     private List<BuildingPOJO> mBuildings;
@@ -51,14 +52,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 //and pass it to another activity...
                 //OR... Let's call our Dialog to ask the user something
                 //Launch the DeleteDialog FROM the MainActivity
-                MainActivity.mDialog = new DeleteDialog();
-
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(BUILDING_KEY, aBuilding);
-
-                MainActivity.mDialog.setArguments(bundle);
+                MainActivity.mDialog = DeleteDialog.newInstance(BUILDING_KEY, aBuilding);
+                Log.i(TAG, "onClick: " + aBuilding.getNameEN());
                 //use the Fragment manager to launch the dialog
-                MainActivity.mDialog.show( mFManager, "delete");
+                MainActivity.mDialog.show( MainActivity.mFManager, "delete");
             }
         });
     }

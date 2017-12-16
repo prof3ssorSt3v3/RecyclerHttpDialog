@@ -4,10 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentActivity;
+
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,7 +23,11 @@ import ca.edumedia.griffis.recyclerhttpdialog.services.MyService;
 import ca.edumedia.griffis.recyclerhttpdialog.utils.NetworkHelper;
 import ca.edumedia.griffis.recyclerhttpdialog.utils.RequestPackage;
 
-public class MainActivity extends AppCompatActivity implements DeleteDialog.DeleteDialogListener{
+//NOTE: FragmentActivity and DeleteDialog.DeleteDialogListener
+//public class MainActivity extends AppCompatActivity {
+public class MainActivity
+        extends FragmentActivity
+        implements DeleteDialog.DeleteDialogListener{
 
 
     private static final String JSON_URL = "https://doors-open-ottawa.mybluemix.net/buildings/secure";
@@ -32,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements DeleteDialog.Dele
     private RecyclerView mRecyclerView;
     //For the Dialog
     public static FragmentManager mFManager;
-    public static DialogFragment mDialog;
+    public static DeleteDialog mDialog;
 
     private BroadcastReceiver mBR = new BroadcastReceiver() {
         @Override
@@ -63,13 +69,16 @@ public class MainActivity extends AppCompatActivity implements DeleteDialog.Dele
         //get the adapter for the recyclerview ready
         displayBuildings();
 
+        //prepare the dialog
+        //mDialog = newInstance();
+        //create a FragmentManager for the Delete Dialog to be used later from the PostAdapter
+        mFManager = getSupportFragmentManager();
+
         //register the service
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBR, new IntentFilter(MyService.MY_SERVICE_MESSAGE));
         //try to retrieve the list of buildings
         fetchBuildings(NO_SELECTED_CATEGORY_ID);
 
-        //create a FragmentManager for the Delete Dialog to be used later from the PostAdapter
-        mFManager = getSupportFragmentManager();
     }
 
     @Override
