@@ -9,6 +9,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements DeleteDialog.Dele
 
     private static final String JSON_URL = "https://doors-open-ottawa.mybluemix.net/buildings";
     private static final int    NO_SELECTED_CATEGORY_ID = -1;
-    private static final String REMEMBER_SELECTED_CATEGORY_ID = "lastSelectedCategoryId";
+    private static final String TAG = "TAG";
     private PostAdapter    mBuildingAdapter;
     private List<BuildingPOJO> mBuildingsList;
     private RecyclerView mRecyclerView;
@@ -56,8 +57,12 @@ public class MainActivity extends AppCompatActivity implements DeleteDialog.Dele
         setContentView(R.layout.activity_main);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.data_list);  //inside activity_main.xml
+        //get the adapter for the recyclerview ready
+        displayBuildings();
 
+        //register the service
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBR, new IntentFilter(MyService.MY_SERVICE_MESSAGE));
+        //try to retrieve the list of buildings
         fetchBuildings(NO_SELECTED_CATEGORY_ID);
     }
 
@@ -70,9 +75,16 @@ public class MainActivity extends AppCompatActivity implements DeleteDialog.Dele
     }
 
     private void displayBuildings() {
+        Log.i(TAG, "displayBuildings: display the building recyclerview");
         if (mBuildingsList != null) {
             mBuildingAdapter = new PostAdapter(this, mBuildingsList);
             mRecyclerView.setAdapter(mBuildingAdapter);
+        }else{
+            //get the adapter ready for the recyclerview when the data isn't here yet
+            BuildingPOJO[] temp = new BuildingPOJO[0];
+            //this could be a different method to just add the data
+            mBuildingAdapter = new PostAdapter(MainActivity.this, Arrays.asList(temp));
+            mRecyclerView.setAdapter( mBuildingAdapter );
         }
     }
 
@@ -82,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements DeleteDialog.Dele
             RequestPackage requestPackage = new RequestPackage();
             requestPackage.setEndPoint(JSON_URL);
             //Default Method is HttpMethod.GET
+            //add the categoryId param if one was picked...
             if (selectedCategoryId != NO_SELECTED_CATEGORY_ID) {
                 requestPackage.setParam("categoryId", selectedCategoryId + "");
             }
