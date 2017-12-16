@@ -1,5 +1,6 @@
 package ca.edumedia.griffis.recyclerhttpdialog.utils;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Base64;
 
@@ -23,14 +24,21 @@ public class HttpHelper {
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    public static String downloadUrl(RequestPackage requestPackage, @Nullable String user, @Nullable String pass) throws IOException {
+    //Constructor without username and password
+    public static String downloadUrl(RequestPackage requestPackage) throws IOException {
+        return downloadUrl(requestPackage, "", "");
+    }
+
+
+    //Constructor WITH username and password
+    public static String downloadUrl(RequestPackage requestPackage, @NonNull String user, @NonNull String pass) throws IOException {
 
         //create the OkHttpClient object
         OkHttpClient client = new OkHttpClient();
         Request.Builder requestBuilder = new Request.Builder();
 
         //Add Authorization if provided
-        if (user != null && pass != null) {
+        if ( !user.equals("") && !pass.equals("") ) {
             InputStream is = null;
             byte[] loginBytes = (user + ":" + pass).getBytes();
             StringBuilder loginHeader = new StringBuilder( )
