@@ -18,6 +18,7 @@ public class MyService extends IntentService {
     public static final String TAG = "MyService";
     public static final String MY_SERVICE_MESSAGE = "myServiceMessage";
     public static final String MY_SERVICE_PAYLOAD = "myServicePayload";
+    public static final String MY_SERVICE_EXCEPTION = "myServiceException";
     public static final String REQUEST_PACKAGE = "requestPackage";
 
     public MyService() {
@@ -35,6 +36,10 @@ public class MyService extends IntentService {
             response = HttpHelper.downloadUrl(requestPackage, null, null);
         } catch (IOException e) {
             e.printStackTrace();
+            Intent messageIntent = new Intent(MY_SERVICE_MESSAGE);
+            messageIntent.putExtra(MY_SERVICE_EXCEPTION, e.getMessage());
+            LocalBroadcastManager manager = LocalBroadcastManager.getInstance(getApplicationContext());
+            manager.sendBroadcast(messageIntent);
             return;
         }
 
