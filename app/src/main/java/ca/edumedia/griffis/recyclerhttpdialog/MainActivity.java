@@ -9,10 +9,12 @@ import android.support.v4.app.FragmentActivity;
 
 import android.support.v4.content.LocalBroadcastManager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,22 +23,19 @@ import ca.edumedia.griffis.recyclerhttpdialog.services.MyService;
 import ca.edumedia.griffis.recyclerhttpdialog.utils.NetworkHelper;
 import ca.edumedia.griffis.recyclerhttpdialog.utils.RequestPackage;
 
-//NOTE: FragmentActivity and DeleteDialog.DeleteDialogListener
-//public class MainActivity extends AppCompatActivity {
-public class MainActivity
-        extends FragmentActivity
-        implements DeleteDialog.DeleteDialogListener{
+//NOTE: FragmentActivity instead of AppCompatActivity
+public class MainActivity extends AppCompatActivity {
+//public class MainActivity extends FragmentActivity{
 
 
     private static final String JSON_URL = "https://doors-open-ottawa.mybluemix.net/buildings/secure";
     private static final int    NO_SELECTED_CATEGORY_ID = -1;
     private static final String TAG = "TAG";
     private MyAdapter mBuildingAdapter;
-    private List<BuildingPOJO> mBuildingsList;
+    private ArrayList<BuildingPOJO> mBuildingsList;
     private RecyclerView mRecyclerView;
     //For the Dialog
-    public static FragmentManager mFManager;
-    public static DeleteDialog mDialog;
+    //public static FragmentManager mFManager;
 
     private BroadcastReceiver mBR = new BroadcastReceiver() {
         @Override
@@ -47,7 +46,7 @@ public class MainActivity
                         "Received " + buildingsArray.length + " buildings from service",
                         Toast.LENGTH_SHORT).show();
                 //Save the Buildings as a global member field in a List or ArrayList
-                mBuildingsList = Arrays.asList(buildingsArray);
+                mBuildingsList = new ArrayList<>(Arrays.asList(buildingsArray));
 
                 displayBuildings();
             } else if (intent.hasExtra(MyService.MY_SERVICE_EXCEPTION)) {
@@ -68,7 +67,7 @@ public class MainActivity
         displayBuildings();
 
         //create a FragmentManager for the Delete Dialog to be used later from the PostAdapter
-        mFManager = getSupportFragmentManager();
+        //mFManager = getSupportFragmentManager();
 
         //register the service
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBR, new IntentFilter(MyService.MY_SERVICE_MESSAGE));
@@ -93,7 +92,8 @@ public class MainActivity
             //get the adapter ready for the recyclerview when the data isn't here yet
             BuildingPOJO[] temp = new BuildingPOJO[0];
             //this could be a different method to just add the data
-            mBuildingAdapter = new MyAdapter(MainActivity.this, Arrays.asList(temp));
+            ArrayList<BuildingPOJO> tempAL = new ArrayList<>(Arrays.asList(temp));
+            mBuildingAdapter = new MyAdapter(MainActivity.this, tempAL);
             mRecyclerView.setAdapter( mBuildingAdapter );
         }
     }
@@ -119,9 +119,9 @@ public class MainActivity
     }
 
 
-    @Override
-    public void onFinishDeleteDialog(int inputNum) {
-        //to handle the returned data from the dialog
-
-    }
+//    @Override
+//    public void onFinishDeleteDialog(int inputNum) {
+//        //to handle the returned data from the dialog
+//
+//    }
 }
