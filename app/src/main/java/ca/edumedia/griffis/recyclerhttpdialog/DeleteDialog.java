@@ -56,6 +56,7 @@ public class DeleteDialog extends DialogFragment {
 
                         DeleteDialogListener activity = (DeleteDialogListener) getActivity();
                         activity.onFinishDeleteDialog( aBuilding.getBuildingId() );
+                        //we are sending back a building id. It could be the whole aBuilding object though...
                         Toast.makeText(getActivity(), "Clicked OK " +id + " " + aBuilding.getNameEN(), Toast.LENGTH_SHORT).show();
 
                     }

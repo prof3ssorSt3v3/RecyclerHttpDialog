@@ -33,7 +33,7 @@ public class MyService extends IntentService {
         String response;
         try {
             //the 2nd and 3rd params are for authorization username, password
-            response = HttpHelper.downloadUrl(requestPackage, "griffis", "pa$$word");
+            response = HttpHelper.downloadUrl(requestPackage, "username goes here", "password goes here");
 
         } catch (IOException e) {
             e.printStackTrace();
