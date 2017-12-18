@@ -66,9 +66,6 @@ public class MainActivity extends AppCompatActivity {
         //get the adapter for the recyclerview ready
         displayBuildings();
 
-        //create a FragmentManager for the Delete Dialog to be used later from the PostAdapter
-        //mFManager = getSupportFragmentManager();
-
         //register the service
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBR, new IntentFilter(MyService.MY_SERVICE_MESSAGE));
         //try to retrieve the list of buildings
@@ -103,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             // prepare requestPackage for Intent
             RequestPackage requestPackage = new RequestPackage();
             requestPackage.setEndPoint(JSON_URL);
-            //Default Method is HttpMethod.GET
+            //Default Method is "GET"
             //add the categoryId param if one was picked...
             //if (selectedCategoryId != NO_SELECTED_CATEGORY_ID) {
                 //requestPackage.setParam("categoryId", selectedCategoryId + "");
@@ -119,9 +116,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-//    @Override
-//    public void onFinishDeleteDialog(int inputNum) {
-//        //to handle the returned data from the dialog
-//
-//    }
 }

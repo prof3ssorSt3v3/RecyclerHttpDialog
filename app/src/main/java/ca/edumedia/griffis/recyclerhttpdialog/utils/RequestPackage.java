@@ -16,7 +16,7 @@ import static android.content.ContentValues.TAG;
 public class RequestPackage implements Parcelable {
 
     private String endPoint;
-    private String method = HttpMethod.GET.toString();
+    private String method = "GET";
     private Map<String, String> params = new HashMap<>();
 
 
@@ -33,11 +33,11 @@ public class RequestPackage implements Parcelable {
 
     //METHOD
     public String getMethod() {
-        return method.toString();
+        return method;
     }
 
-    public void setMethod(HttpMethod method) {
-        this.method = method.toString();
+    public void setMethod(String method) {
+        this.method = method;
     }
 
 
@@ -82,7 +82,7 @@ public class RequestPackage implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.endPoint);
-        dest.writeString(this.method.toString() );
+        dest.writeString(this.method );
         dest.writeInt(this.params.size());
         for (Map.Entry<String, String> entry : this.params.entrySet()) {
             dest.writeString(entry.getKey());

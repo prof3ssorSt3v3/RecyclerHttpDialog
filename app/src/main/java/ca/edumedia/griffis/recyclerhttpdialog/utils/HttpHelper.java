@@ -56,14 +56,14 @@ public class HttpHelper {
         Log.i(TAG, "downloadUrl: " + encodedParams);
 
         //Handle any GET params
-        if (requestPackage.getMethod() == HttpMethod.GET.toString()  && encodedParams.length() > 0) {
+        if (requestPackage.getMethod().equals("GET")  && encodedParams.length() > 0) {
             address = String.format("%s?%s", address, encodedParams);
         }
 
         //Handle any POST or PUT params as a JSON String to send to the server
 
 
-        if ( (requestPackage.getMethod() == HttpMethod.POST.toString() || requestPackage.getMethod() == HttpMethod.PUT.toString()) ){
+        if ( requestPackage.getMethod().equals("POST") || requestPackage.getMethod().equals("PUT") ){
 
             JSONObject json = new JSONObject(requestPackage.getParams());
             String params = json.toString();
